@@ -4,14 +4,21 @@ const mongoose = require('mongoose');
 const accidentRoutes = require('./routes/accidentRoutes');
 const { countdownEmitter } = require('./services/countdownService');
 const AlertService = require('./services/alertService');
+const { initialize: initAmbulanceSockets } = require('./sockets/ambulanceSocket');
+
 
 const app = express();
+const server = require('http').createServer(app);
+
+initAmbulanceSockets(server);
 
 // Middleware
 app.use(express.json());
 
 // Routes
 app.use('/api/accident-detection', accidentRoutes);
+app.use('/api/ambulance', ambulanceRoutes);
+
 
 // Handle countdown expiration
 countdownEmitter.on('countdownExpired', async ({ userId }) => {
@@ -29,3 +36,5 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
+
+
