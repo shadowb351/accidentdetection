@@ -1,3 +1,29 @@
+import React from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
+import AppRoutes from './routes/AppRoutes';
+import { AuthProvider } from './contexts/AuthContext';
+import { EmergencyProvider } from './contexts/EmergencyContext';
+import { MapProvider } from './contexts/MapContext';
+import Layout from './components/layout/Layout';
+
+function App() {
+  return (
+    <Router>
+      <AuthProvider>
+        <EmergencyProvider>
+          <MapProvider>
+            <Layout>
+              <AppRoutes />
+            </Layout>
+          </MapProvider>
+        </EmergencyProvider>
+      </AuthProvider>
+    </Router>
+  );
+}
+
+export default App;
+
 // In your main server file (app.js or server.js)
 const express = require('express');
 const mongoose = require('mongoose');
